@@ -3,10 +3,12 @@ package controller;
 import domain.GraphException;
 import domain.SinglyLinkedListGraph;
 import domain.list.ListException;
+import domain.stack.StackException;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -24,6 +26,8 @@ public class LinkedGraphController
     private Group graf;
 
     private Alert alert;
+
+    private TextInputDialog input1;
 
     private SinglyLinkedListGraph listGraph;
     @javafx.fxml.FXML
@@ -45,11 +49,11 @@ public class LinkedGraphController
             String vertexIndex = util.Utility.getCountry(i);
             String vertexIndex2 = util.Utility.getCountry(i);
             int weight = util.Utility.random(200,1000);
-            if (!listGraph.containsEdge(listGraph.getVertex(vertexIndex2),listGraph.getVertex(vertexIndex))) {
-                listGraph.addEdgeAndWeight(listGraph.getVertex(vertexIndex2), listGraph.getVertex(vertexIndex), weight);
+            if (!listGraph.containsEdge(listGraph.getVertex(vertexIndex2).data,listGraph.getVertex(vertexIndex).data)) {
+                listGraph.addEdgeAndWeight(listGraph.getVertex(vertexIndex2).data, listGraph.getVertex(vertexIndex).data, weight);
             }
-            if (!listGraph.containsEdge(listGraph.getVertex(i),listGraph.getVertex(vertexIndex))) {
-                listGraph.addEdgeAndWeight(listGraph.getVertex(i), listGraph.getVertex(vertexIndex), weight);
+            if (!listGraph.containsEdge(listGraph.getVertex(i).data,listGraph.getVertex(vertexIndex).data)) {
+                listGraph.addEdgeAndWeight(listGraph.getVertex(i).data, listGraph.getVertex(vertexIndex).data, weight);
 
             }
         }
@@ -130,10 +134,20 @@ public class LinkedGraphController
     @javafx.fxml.FXML
     void containsVertexOnAction(ActionEvent event) {
 
+
     }
 
     @javafx.fxml.FXML
     void dfsTourOnAction(ActionEvent event) {
+        try {
+            textareaInfo.setText("DFS Tour on Linked Graph: \n"+listGraph.dfs());
+        } catch (GraphException e) {
+            throw new RuntimeException(e);
+        } catch (StackException e) {
+            throw new RuntimeException(e);
+        } catch (ListException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -153,19 +167,18 @@ public class LinkedGraphController
             }
         }
         for (int i = 0; i < 10; i++) {
-            int vertexIndex = util.Utility.random(10);
-            int vertexIndex2 = util.Utility.random(10);
-            int peso = util.Utility.random(200,1000);
+            String vertexIndex = util.Utility.getCountry(i);
+            String vertexIndex2 = util.Utility.getCountry(i);
+            int weight = util.Utility.random(200,1000);
             if (!listGraph.containsEdge(listGraph.getVertex(vertexIndex2).data,listGraph.getVertex(vertexIndex).data)) {
-                listGraph.addEdgeAndWeight(listGraph.getVertex(vertexIndex2).data, listGraph.getVertex(vertexIndex).data, peso);
+                listGraph.addEdgeAndWeight(listGraph.getVertex(vertexIndex2).data, listGraph.getVertex(vertexIndex).data, weight);
             }
             if (!listGraph.containsEdge(listGraph.getVertex(i).data,listGraph.getVertex(vertexIndex).data)) {
-                listGraph.addEdgeAndWeight(listGraph.getVertex(i).data, listGraph.getVertex(vertexIndex).data, peso);
+                listGraph.addEdgeAndWeight(listGraph.getVertex(i).data, listGraph.getVertex(vertexIndex).data, weight);
 
             }
         }
         drawListGraph();
-
     }
 
     @javafx.fxml.FXML

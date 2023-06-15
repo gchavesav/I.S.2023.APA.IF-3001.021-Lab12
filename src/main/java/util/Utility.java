@@ -94,10 +94,9 @@ public class Utility {
                 return ch1.compareTo(ch2)<0? -1 :
                         ch1.compareTo(ch2)>0? 1 : 0;
             case "EdgeWeight":
-                EdgeWeight ar1 = (EdgeWeight)a; EdgeWeight ar2 = (EdgeWeight)b;
-                Character v1 = (Character) ar1.getEdge(); Character v2 = (Character) ar2.getEdge();
-                return v1.compareTo(v2)<0? -1 :
-                        v1.compareTo(v2)>0? 1 : 0;
+            EdgeWeight ew1 = (EdgeWeight)a; EdgeWeight ew2 = (EdgeWeight)b;
+            return ew1.getEdge().equals(ew2.getEdge())? 0 :
+                    ew1.getEdge().toString().compareTo(ew2.getEdge().toString())<0? -1: 1;
         }
         return 2; //Unknown
     }
@@ -106,6 +105,7 @@ public class Utility {
         if(a instanceof Integer) return "Integer";
         if(a instanceof String) return "String";
         if(a instanceof Character) return "Character";
+        if(a instanceof EdgeWeight) return "EdgeWeight";
         return "Unknown"; //desconocido
     }
 
@@ -147,6 +147,19 @@ public class Utility {
         for (int i = 0; i < n; i++){
             a[i] = random(bound);
         }
+    }
+
+    public static String getCountry(int i){
+        String list[] = {"Argentina", "Australia", "Austria", "Alemania",
+                "Belgica", "Bolivia", "Brasil", "Belice",
+                "Costa Rica", "Colombia", "Canada", "Chile",
+                "Dinamarca", "Ecuador", "Estonia", "El Salvador",
+                "Francia", "Finlandia", "Grecia", "Guatemala",
+                "Honduras", "Hungria", "India", "Italia",
+                "Jamaica", "Japon", "Mexico", "Marruecos",
+                "USA", "Nigeria", "Panama", "Portugal",
+        };
+        return list[i];
     }
 
     public static String show(int[] a, int bound) {
