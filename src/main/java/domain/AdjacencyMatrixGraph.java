@@ -17,7 +17,7 @@ import domain.stack.StackException;
  */
 public class AdjacencyMatrixGraph implements Graph {
     private int n;
-    private Vertex vertexList[];
+    public Vertex[] vertexList;
     private Object adjacencyMatrix[][];
     private int counter; //contador de vertices
     
