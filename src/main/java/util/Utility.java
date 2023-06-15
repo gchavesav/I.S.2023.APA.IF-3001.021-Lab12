@@ -125,6 +125,14 @@ public class Utility {
         return alfabeto[(int) (Math.random() * 27 - 1)];
     }
 
+    public static String getCapital(){
+        String[] capilates={"Monaco", "Jakarta", "Vienna", "Madrid", "Rabat",
+                "Paris", "Tokio", "San Jose", "Madrid", "Helsinki", "paris"};
+
+        int i= random(capilates.length-1);
+        return capilates[i];
+    }
+
     public static int maxArray(int[] a) {
         int max = a[0]; //first element
         for (int i = 1; i < a.length; i++) {
