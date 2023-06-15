@@ -20,10 +20,10 @@ public class DijkstraController {
     private RadioButton linkedListRadiobutton;
 
     @FXML
-    private TableColumn<?, ?> positionColum;
+    private TableColumn<String, String> positionColum;
 
     @FXML
-    private TableColumn<?, ?> vertexColum;
+    private TableColumn<String, String> vertexColum;
 
     @FXML
     void randomizeOnAction(ActionEvent event) {
