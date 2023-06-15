@@ -124,6 +124,19 @@ public class Utility {
             alfabeto[cont++] = i;
         return alfabeto[(int) (Math.random() * 27 - 1)];
     }
+    public static String getCountry(){
+        String list[] = {"Argentina", "Australia", "Austria", "Alemania",
+                "Belgica", "Bolivia", "Brasil", "Belice",
+                "Costa Rica", "Colombia", "Canada", "Chile",
+                "Dinamarca", "Ecuador", "Estonia", "El Salvador",
+                "Francia", "Finlandia", "Grecia", "Guatemala",
+                "Honduras", "Hungria", "India", "Italia",
+                "Jamaica", "Japon", "Mexico", "Marruecos",
+                "USA", "Nigeria", "Panama", "Portugal"
+        };
+
+        return list[random(31)];
+    }
 
     public static int maxArray(int[] a) {
         int max = a[0]; //first element
