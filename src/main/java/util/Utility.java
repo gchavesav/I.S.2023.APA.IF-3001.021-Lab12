@@ -94,10 +94,9 @@ public class Utility {
                 return ch1.compareTo(ch2)<0? -1 :
                         ch1.compareTo(ch2)>0? 1 : 0;
             case "EdgeWeight":
-                EdgeWeight ar1 = (EdgeWeight)a; EdgeWeight ar2 = (EdgeWeight)b;
-                Character v1 = (Character) ar1.getEdge(); Character v2 = (Character) ar2.getEdge();
-                return v1.compareTo(v2)<0? -1 :
-                        v1.compareTo(v2)>0? 1 : 0;
+                EdgeWeight ew1 = (EdgeWeight)a; EdgeWeight ew2 = (EdgeWeight)b;
+                return ew1.getEdge().equals(ew2.getEdge())? 0 :
+                        ew1.getEdge().toString().compareTo(ew2.getEdge().toString())<0? -1: 1;
         }
         return 2; //Unknown
     }
@@ -148,6 +147,8 @@ public class Utility {
             a[i] = random(bound);
         }
     }
+
+
 
     public static String show(int[] a, int bound) {
         String result = "";
