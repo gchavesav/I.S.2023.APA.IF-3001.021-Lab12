@@ -44,7 +44,7 @@
                   <TableColumn fx:id="DistanceColum" minWidth="7.0" prefWidth="107.0" text="Distance" />
               </columns>
             </TableView>
-            <Pane layoutX="32.0" layoutY="254.0" prefHeight="321.0" prefWidth="482.0" />
+            <Pane fx:id="base" layoutX="32.0" layoutY="254.0" prefHeight="321.0" prefWidth="482.0" />
             <Label alignment="CENTER" layoutX="13.0" layoutY="48.0" prefHeight="31.0" prefWidth="236.0" style="-fx-background-color: #d7d7d7;" text="Graph Type">
                <font>
                   <Font name="Lucida Bright" size="26.0" />
