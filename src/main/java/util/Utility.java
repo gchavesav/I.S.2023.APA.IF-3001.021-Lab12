@@ -1,5 +1,6 @@
 package util;
 import domain.EdgeWeight;
+import domain.SinglyLinkedListGraph;
 import domain.Vertex;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -13,10 +14,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  *
@@ -94,9 +92,19 @@ public class Utility {
                 return ch1.compareTo(ch2)<0? -1 :
                         ch1.compareTo(ch2)>0? 1 : 0;
             case "EdgeWeight":
-                EdgeWeight ew1 = (EdgeWeight)a; EdgeWeight ew2 = (EdgeWeight)b;
-                return ew1.getEdge().equals(ew2.getEdge())? 0 :
-                        ew1.getEdge().toString().compareTo(ew2.getEdge().toString())<0? -1: 1;
+            EdgeWeight ew1 = (EdgeWeight)a; EdgeWeight ew2 = (EdgeWeight)b;
+            return ew1.getEdge().equals(ew2.getEdge())? 0 :
+                    ew1.getEdge().toString().compareTo(ew2.getEdge().toString())<0? -1: 1;
+            case "Vertex":
+                Vertex ver1= (Vertex) a;
+                Vertex ver2= (Vertex) b;
+                return ver1.data.toString().compareToIgnoreCase(ver2.data.toString())<0?-1:
+                        ver1.data.toString().compareToIgnoreCase(ver2.data.toString())>0? 1: 0;
+            case "LinkedList":
+                SinglyLinkedListGraph s1 = (SinglyLinkedListGraph)a;
+                SinglyLinkedListGraph s2 = (SinglyLinkedListGraph)b;
+                return s1.toString().compareToIgnoreCase(s2.toString())<0?-1:
+                       s1.toString().compareToIgnoreCase(s2.toString())>0? 1:0;
         }
         return 2; //Unknown
     }
@@ -113,6 +121,8 @@ public class Utility {
         if(a instanceof String&&b instanceof String) return "String";
         if(a instanceof Character&&b instanceof Character) return "Character";
         if(a instanceof EdgeWeight &&b instanceof EdgeWeight) return "EdgeWeight";
+        if(a instanceof Vertex &&b instanceof Vertex) return "Vertex";
+        if(a instanceof LinkedList &&b instanceof LinkedList) return "LinkedList";
         return "Unknown"; //desconocido
     }
 
@@ -122,6 +132,19 @@ public class Utility {
         for(char i='A';i<='Z';i++)
             alfabeto[cont++] = i;
         return alfabeto[(int) (Math.random() * 27 - 1)];
+    }
+    public static String getCountry(){
+        String list[] = {"Argentina", "Australia", "Austria", "Alemania",
+                "Belgica", "Bolivia", "Brasil", "Belice",
+                "Costa Rica", "Colombia", "Canada", "Chile",
+                "Dinamarca", "Ecuador", "Estonia", "El Salvador",
+                "Francia", "Finlandia", "Grecia", "Guatemala",
+                "Honduras", "Hungria", "India", "Italia",
+                "Jamaica", "Japon", "Mexico", "Marruecos",
+                "USA", "Nigeria", "Panama", "Portugal"
+        };
+
+        return list[random(31)];
     }
 
     public static int maxArray(int[] a) {
