@@ -151,6 +151,14 @@ public class AdjacencyMatrixGraph implements Graph {
         adjacencyMatrix[indexOf(a)][indexOf(b)] = c;
         adjacencyMatrix[indexOf(b)][indexOf(a)] = c; //grafo no dirigido
     }
+    public void addEdgeAndWeight2(Object a, Object b, Object c) throws GraphException {
+        if(!containsVertex(a)||!containsVertex(b)){
+            throw new GraphException("Cannot add edge between "
+                    + " vertexes ["+a+"] y ["+b+"]");
+        }
+        adjacencyMatrix[indexOf(a)][indexOf(b)] = c;
+       // adjacencyMatrix[indexOf(b)][indexOf(a)] = c; //grafo no dirigido
+    }
     
     @Override
     public void addWeight(Object a, Object b, Object weight) throws GraphException {

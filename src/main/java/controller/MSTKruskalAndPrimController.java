@@ -17,6 +17,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import ucr.lab.Kruskal;
 import util.Utility;
 
 import java.util.ArrayList;
@@ -43,9 +44,11 @@ public class MSTKruskalAndPrimController {
     private AdjacencyMatrixGraph adjacencyMatrixGraph;
     private SinglyLinkedListGraph singlyLinkedListGraph;
     private ToggleGroup group;
+    Kruskal kruskal ;
 
     @FXML
     void initialize(){
+        kruskal= new Kruskal();
         singlyLinkedListGraph = new SinglyLinkedListGraph();
         adjacencyMatrixGraph = new AdjacencyMatrixGraph(26);
         adjacencyListGraph = new AdjacencyListGraph(26);
@@ -109,9 +112,13 @@ public class MSTKruskalAndPrimController {
     }
 
     @FXML
-    void onActionKruskal(ActionEvent event) {
+    void onActionKruskal(ActionEvent event) throws GraphException {
         if (rbtAdjMatrix.isSelected() || rbtAdjList.isSelected() || rbtLinkedList.isSelected()){
-            //poner aquí el código para ejecutar el algoritmo y mostrar el grafo
+            if (rbtAdjMatrix.isSelected()){
+              // kruskal.init(adjacencyMatrixGraph);
+            }
+
+                //poner aquí el código para ejecutar el algoritmo y mostrar el grafo
         }else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);

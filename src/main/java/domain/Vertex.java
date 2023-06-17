@@ -32,9 +32,11 @@ public class Vertex {
     public void setVisited(boolean visited) {
         this.visited = visited;
     }
-    
-    
-    
+
+    public SinglyLinkedList getEdgesList() {
+        return edgesList;
+    }
+
     @Override
     public String toString() {
         return data+"";
