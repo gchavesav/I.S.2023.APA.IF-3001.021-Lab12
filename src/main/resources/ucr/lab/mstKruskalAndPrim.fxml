@@ -26,17 +26,17 @@
                                     <Font name="Lucida Bright" size="20.0" />
                                  </font>
                               </Label>
-                              <RadioButton fx:id="rbtAdjMatrix" mnemonicParsing="false" text="Adjacency Matrix">
+                              <RadioButton fx:id="rbtAdjMatrix" mnemonicParsing="false" onAction="#setOnActionAdjMatrix" text="Adjacency Matrix">
                                  <font>
                                     <Font name="Lucida Bright" size="20.0" />
                                  </font>
                               </RadioButton>
-                              <RadioButton fx:id="rbtAdjList" mnemonicParsing="false" text="Adjacency List">
+                              <RadioButton fx:id="rbtAdjList" mnemonicParsing="false" onAction="#onActionAdjList" text="Adjacency List">
                                  <font>
                                     <Font name="Lucida Bright" size="20.0" />
                                  </font>
                               </RadioButton>
-                              <RadioButton fx:id="rbtLinkedList" mnemonicParsing="false" text="Linked List">
+                              <RadioButton fx:id="rbtLinkedList" mnemonicParsing="false" onAction="#onActionLinkedList" text="Linked List">
                                  <font>
                                     <Font name="Lucida Bright" size="20.0" />
                                  </font>
@@ -55,12 +55,12 @@
                                     <Font name="Lucida Bright" size="20.0" />
                                  </font>
                               </Label>
-                              <RadioButton fx:id="rbtKruskal" mnemonicParsing="false" text="Kruskal">
+                              <RadioButton fx:id="rbtKruskal" mnemonicParsing="false" onAction="#onActionKruskal" text="Kruskal">
                                  <font>
                                     <Font name="Lucida Bright" size="20.0" />
                                  </font>
                               </RadioButton>
-                              <RadioButton fx:id="rbtPrim" mnemonicParsing="false" text="Prim">
+                              <RadioButton fx:id="rbtPrim" mnemonicParsing="false" onAction="#onActionPrim" text="Prim">
                                  <font>
                                     <Font name="Lucida Bright" size="20.0" />
                                  </font>

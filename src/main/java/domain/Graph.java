@@ -44,4 +44,5 @@ public interface Graph {
     //retorna el vertice segun id indicado
     public Vertex getVertexByIndex(int index) throws ListException;
     public int getNumNodes() throws ListException;
+    public int indexOf(Object element) throws ListException;
 }

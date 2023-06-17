@@ -31,6 +31,7 @@ public class SinglyLinkedListGraph implements Graph {
         this.queue = new LinkedQueue();
     }
 
+    @Override
     public int indexOf(Object element) throws ListException {
         for(int i=1;i<=vertexList.size();i++){
             Vertex vertex = (Vertex)vertexList.getNode(i).data;

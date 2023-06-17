@@ -95,9 +95,9 @@ public class Utility {
                         ch1.compareTo(ch2)>0? 1 : 0;
             case "EdgeWeight":
                 EdgeWeight ar1 = (EdgeWeight)a; EdgeWeight ar2 = (EdgeWeight)b;
-                Character v1 = (Character) ar1.getEdge(); Character v2 = (Character) ar2.getEdge();
-                return v1.compareTo(v2)<0? -1 :
-                        v1.compareTo(v2)>0? 1 : 0;
+                int v1 = (Integer) ar1.getEdge(); int v2 = (Integer) ar2.getEdge();
+                return v1 < v2? -1 :
+                        v1 > v2? 1 : 0;
         }
         return 2; //Unknown
     }
