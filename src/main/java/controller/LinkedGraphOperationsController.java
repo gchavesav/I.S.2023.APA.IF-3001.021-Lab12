@@ -71,7 +71,7 @@ public class LinkedGraphOperationsController {
     void removeVertexOnAction(ActionEvent event) {
     }
 
-    // Método para dibujar el gráfo
+    // Método para dibujar el grafo
     private void drawGraph() {
         grafo.getChildren().clear();
         int numNodes = 0;
@@ -112,7 +112,7 @@ public class LinkedGraphOperationsController {
         grafo.getChildren().addAll(texts);
     }
 
-    //Método para dibujar las Áristas
+    //Método para dibujar las Aristas
     private void drawEdges(Circle[] circles) {
         double centerY = grafo.getPrefHeight() / 2;
         double centerX = grafo.getPrefWidth() / 2;
@@ -152,7 +152,7 @@ public class LinkedGraphOperationsController {
         }
     }
 
-    //Randomiza el Gráfo
+    //Randomiza el Grafo
     private void randomizeGraph() {
         linkedGraph.clear();
         listOfEdges.clear();
@@ -176,7 +176,7 @@ public class LinkedGraphOperationsController {
         data.setText(linkedGraph.toString());
     }
 
-    //Método para agregar las áristas y los pesos entre 200 y 1000
+    //Método para agregar las aristas y los pesos entre 200 y 1000
     private void addEdgeWeight() {
         int a = 0;
         int b = 0;
@@ -210,7 +210,7 @@ public class LinkedGraphOperationsController {
         }
     }
 
-    //Método para agregar vértices nuevos y que se dibujen en el gráfo
+    //Método para agregar vértices nuevos y que se dibujen en el grafo
     private void addVertex() {
         String country = Utility.getCountry();
         try {
@@ -234,7 +234,7 @@ public class LinkedGraphOperationsController {
         data.setText(linkedGraph.toString());
     }
 
-    //Este método calcula la cantidad máxima de áristas que se permiten en el gráfo
+    //Este método calcula la cantidad máxima de aristas que se permiten en el grafo
     private int calcularMaxEdges(int nodes) {
         int sum = 0;
         int num = nodes - 1;
