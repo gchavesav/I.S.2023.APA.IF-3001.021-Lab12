@@ -93,11 +93,47 @@ public class Utility {
                 Character ch1 = (Character)a; Character ch2 = (Character)b;
                 return ch1.compareTo(ch2)<0? -1 :
                         ch1.compareTo(ch2)>0? 1 : 0;
+
+
+                //CORRECION PROFE:
             case "EdgeWeight":
-                EdgeWeight ar1 = (EdgeWeight)a; EdgeWeight ar2 = (EdgeWeight)b;
-                Character v1 = (Character) ar1.getEdge(); Character v2 = (Character) ar2.getEdge();
-                return v1.compareTo(v2)<0? -1 :
-                        v1.compareTo(v2)>0? 1 : 0;
+                EdgeWeight ew1 = (EdgeWeight)a; EdgeWeight ew2 = (EdgeWeight)b;
+                return ew1.getEdge().equals(ew2.getEdge())? 0 :
+                        ew1.getEdge().toString().compareTo(ew2.getEdge().toString())<0? -1: 1;
+
+//            case "EdgeWeight":
+//                EdgeWeight ar1 = (EdgeWeight)a; EdgeWeight ar2 = (EdgeWeight)b;
+//                String v1 = (String) ar1.getEdge(); String v2 = (String) ar2.getEdge();
+//                return v1.toString().compareTo(v2.toString())<0? -1 :
+//                        v1.toString().compareTo(v2.toString())>0? 1 : 0;
+
+
+//            case "EdgeWeight":
+//                EdgeWeight ar1 = (EdgeWeight)a; EdgeWeight ar2 = (EdgeWeight)b;
+//                Character v1 = (Character) ar1.getEdge(); Character v2 = (Character) ar2.getEdge();
+//                return v1.compareTo(v2)<0? -1 :
+//                        v1.compareTo(v2)>0? 1 : 0;
+
+//            case "EdgeWeight":
+//                try {
+//                    EdgeWeight ar1 = (EdgeWeight) a;
+//                    EdgeWeight ar2 = (EdgeWeight) b;
+//                    Character v1 = (Character) ar1.getEdge();
+//                    Character v2 = (Character) ar2.getEdge();
+//                    return v1.compareTo(v2) < 0 ? -1 :
+//                            v1.compareTo(v2) > 0 ? 1 : 0;
+//                } catch (ClassCastException e) {
+//                    EdgeWeight ar1 = (EdgeWeight) a;
+//                    EdgeWeight ar2 = (EdgeWeight) b;
+//                    return ar1.toString().compareTo(ar2.toString()) < 0 ? -1 :
+//                            ar1.toString().compareTo(ar2.toString()) > 0 ?1:0;
+//                }
+
+            case "Vertex":
+                Vertex vx1 = (Vertex) a;
+                Vertex vx2 = (Vertex) b;
+                return vx1.data.toString().compareToIgnoreCase(vx2.data.toString()) < 0 ? -1 :
+                        vx1.data.toString().compareToIgnoreCase(vx2.data.toString()) > 0 ? 1 : 0;
         }
         return 2; //Unknown
     }
@@ -114,6 +150,7 @@ public class Utility {
         if(a instanceof String&&b instanceof String) return "String";
         if(a instanceof Character&&b instanceof Character) return "Character";
         if(a instanceof EdgeWeight &&b instanceof EdgeWeight) return "EdgeWeight";
+        if(a instanceof Vertex&&b instanceof Vertex) return "Vertex";
         return "Unknown"; //desconocido
     }
 
@@ -165,6 +202,14 @@ public class Utility {
 
         }
         return result;
+    }
+
+    public static String getCapital() {
+        String list[] = {"San Jose", "Cartagena", "Washington DC", "Berlin", "Luanda",
+                "Argel", "Buenos Aires", "Viena", "Camberra", "Bogota",
+                "Santiago de Chile", "Pekin", "Santo Doming", "El Salvador", "Quito",
+                "Ciudad Guatemala", "Budapest", "Managua", "Roma", "Londres"};
+        return list[random(19)];
     }
 
 }
