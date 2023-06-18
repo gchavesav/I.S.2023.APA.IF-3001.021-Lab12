@@ -33,32 +33,32 @@ public class LinkedGraphController
     private SinglyLinkedListGraph listGraph;
     @javafx.fxml.FXML
     public void initialize() throws GraphException, ListException {
-//        listGraph= new SinglyLinkedListGraph();
-//        for (int i = 0; i < 10; i++) {
-//            String country = util.Utility.getCountry(i);
-//            if (i==0){
-//                listGraph.addVertex(country);
-//            }else{
-//                if (!listGraph.containsVertex(country)){
-//                    listGraph.addVertex(country);
-//                }else{
-//                    i--;
-//                }
-//            }
-//        }
-//        for (int i = 0; i < 10; i++) {
-//            String vertexIndex = util.Utility.getCountry(i);
-//            String vertexIndex2 = util.Utility.getCountry(i);
-//            int weight = util.Utility.random(200,1000);
-//            if (!listGraph.containsEdge(listGraph.getVertex(vertexIndex2).data,listGraph.getVertex(vertexIndex).data)) {
-//                listGraph.addEdgeAndWeight(listGraph.getVertex(vertexIndex2).data, listGraph.getVertex(vertexIndex).data, weight);
-//            }
-//            if (!listGraph.containsEdge(listGraph.getVertex(i).data,listGraph.getVertex(vertexIndex).data)) {
-//                listGraph.addEdgeAndWeight(listGraph.getVertex(i).data, listGraph.getVertex(vertexIndex).data, weight);
-//
-//            }
-//        }
-//        drawListGraph();
+        listGraph= new SinglyLinkedListGraph();
+        for (int i = 1; i < 11; i++) { //Se inicializa asi para evitar problemas de is null
+            String country = util.Utility.getCountry();
+            if (i==1 ){
+                listGraph.addVertex(country);
+            }else{
+                if (!listGraph.containsVertex(country)){
+                    listGraph.addVertex(country);
+                }else {
+                    i--;
+                }
+
+            }
+        }
+        for (int i = 1; i < 11; i++) {
+            int vertexIndex = util.Utility.random(i);
+            int vertexIndex2 = util.Utility.random(i);
+            int weight = util.Utility.random(200,1000);
+            if (vertexIndex!=vertexIndex2) {
+                listGraph.addEdgeAndWeight(listGraph.getVertexByIndex(vertexIndex2).data, listGraph.getVertexByIndex(vertexIndex).data, weight);
+            }
+            if (!listGraph.containsEdge(listGraph.getVertexByIndex(i).data,listGraph.getVertexByIndex(vertexIndex).data)) {
+                listGraph.addEdgeAndWeight(listGraph.getVertexByIndex(i).data, listGraph.getVertexByIndex(vertexIndex).data, weight);
+            }
+        }
+        drawListGraph();
     }
 
     private void drawListGraph() throws ListException, GraphException {
@@ -71,26 +71,26 @@ public class LinkedGraphController
 
         graf.getChildren().clear();
 
-        for (int i = 0; i < numVertices; i++) {
+        for (int i = 1; i < numVertices+1; i++) {
             double angle = i * angleStep;
             double x = centerX + radius * Math.cos(angle);
             double y = centerY + radius * Math.sin(angle);
 
             Circle vertex = new Circle(x, y, 25);
-            vertex.setFill(Color.CYAN);
+            vertex.setFill(Color.GOLD);
 
-            Text vertexLabel = new Text(String.valueOf(listGraph.getVertex(i).data));
+            Text vertexLabel = new Text(String.valueOf(listGraph.getVertexByIndex(i).data));
             vertexLabel.setFill(Color.BLACK);
             vertexLabel.setX(x - vertexLabel.getLayoutBounds().getWidth() / 2);
             vertexLabel.setY(y + vertexLabel.getLayoutBounds().getHeight() / 4);
 
             graf.getChildren().addAll(vertex, vertexLabel);
+
         }
 
-        // Dibujar las conexiones entre los vértices
-        for (int k = 0; k < numVertices; k++) {
-            for (int j = 0; j < numVertices; j++) {
-                if (listGraph.containsEdge(listGraph.getVertex(k).data, listGraph.getVertex(j).data)) {
+        for (int k = 1; k < numVertices+1; k++) {
+            for (int j = 1; j < numVertices+1; j++) {
+                if (listGraph.containsEdge(listGraph.getVertexByIndex(k).data, listGraph.getVertexByIndex(j).data)) {
                     double angleTo = j * angleStep;
                     double xTo = centerX + radius * Math.cos(angleTo);
                     double yTo = centerY + radius * Math.sin(angleTo);
@@ -108,13 +108,13 @@ public class LinkedGraphController
                     connection.setOnMouseEntered(event -> {
                         connection.setStroke(Color.RED);
                         connection.setStrokeWidth(6.0);
+
                     });
 
                     connection.setOnMouseExited(event -> {
                         connection.setStroke(Color.BLACK);
                         connection.setStrokeWidth(1.5);
                     });
-
                     graf.getChildren().add(connection);
                 }
             }
@@ -124,20 +124,20 @@ public class LinkedGraphController
 
     @javafx.fxml.FXML
     void bfsTourOnAction(ActionEvent event) throws GraphException, QueueException, ListException {
-        textareaInfo.setText(listGraph.bfs());
+        textareaInfo.setText("BFS Tour on Linked Graph: \n"+listGraph.bfs());
     }
 
     @javafx.fxml.FXML
     void containsEdgeOnAction(ActionEvent event) {
         input1 = util.FXUtility.dialog("Edge Contains","Contains: ");
         input1.showAndWait();
-        int value1 = Integer.parseInt(input1.getResult());
+        String value1 = (input1.getResult());
         this.alert=util.FXUtility.alert("Edge Contains","Contains: ");
         alert.setAlertType(Alert.AlertType.INFORMATION);
 
         input2 = util.FXUtility.dialog("Edge Contains","Contains: ");
         input2.showAndWait();
-        int value2 = Integer.parseInt(input2.getResult());
+        String value2 = (input2.getResult());
         this.alert=util.FXUtility.alert("Edge Contains","Contains: ");
         alert.setAlertType(Alert.AlertType.INFORMATION);
 
@@ -154,6 +154,19 @@ public class LinkedGraphController
 
     @javafx.fxml.FXML
     void containsVertexOnAction(ActionEvent event) {
+        input1 = util.FXUtility.dialog("Vertex","Contains: ");
+        input1.showAndWait();
+        String vertex1 = String.valueOf(input1.getResult());
+        this.alert=util.FXUtility.alert("Vertex ","Contains: ");
+        alert.setAlertType(Alert.AlertType.INFORMATION);
+        try {
+            alert.setContentText(String.valueOf(listGraph.containsVertex(vertex1)));
+            alert.showAndWait();
+        } catch (GraphException e) {
+            throw new RuntimeException(e);
+        } catch (ListException e) {
+            throw new RuntimeException(e);
+        }
 
 
     }
@@ -168,32 +181,32 @@ public class LinkedGraphController
 
     @javafx.fxml.FXML
     void randomizeOnAction(ActionEvent event) throws GraphException, ListException {
-//        listGraph= new SinglyLinkedListGraph();
-//        for (int i = 0; i < 10; i++) {
-//            String country = util.Utility.getCountry(i);
-//            if (i==0){
-//                listGraph.addVertex(country);
-//            }else{
-//                if (!listGraph.containsVertex(country)){
-//                    listGraph.addVertex(country);
-//                }else{
-//                    i--;
-//                }
-//            }
-//        }
-//        for (int i = 0; i < 10; i++) {
-//            String vertexIndex = util.Utility.getCountry(i);
-//            String vertexIndex2 = util.Utility.getCountry(i);
-//            int weight = util.Utility.random(200,1000);
-//            if (!listGraph.containsEdge(listGraph.getVertex(vertexIndex2).data,listGraph.getVertex(vertexIndex).data)) {
-//                listGraph.addEdgeAndWeight(listGraph.getVertex(vertexIndex2).data, listGraph.getVertex(vertexIndex).data, weight);
-//            }
-//            if (!listGraph.containsEdge(listGraph.getVertex(i).data,listGraph.getVertex(vertexIndex).data)) {
-//                listGraph.addEdgeAndWeight(listGraph.getVertex(i).data, listGraph.getVertex(vertexIndex).data, weight);
-//
-//            }
-//        }
-//        drawListGraph();
+        listGraph.clear();
+        for (int i = 1; i < 11; i++) {
+            String country = util.Utility.getCountry();
+            if (i==1 ){
+                listGraph.addVertex(country);
+            }else{
+                if (!listGraph.containsVertex(country)){
+                    listGraph.addVertex(country);
+
+                }else {
+                    i--;
+                }
+            }
+        }
+        for (int i = 1; i < 11; i++) {
+            int vertexIndex = util.Utility.random(i);
+            int vertexIndex2 = util.Utility.random(i);
+            int weight = util.Utility.random(200,1000);
+            if (vertexIndex!=vertexIndex2) {
+                listGraph.addEdgeAndWeight(listGraph.getVertexByIndex(vertexIndex2).data, listGraph.getVertexByIndex(vertexIndex).data, weight);
+            }
+            if (!listGraph.containsEdge(listGraph.getVertexByIndex(i).data,listGraph.getVertexByIndex(vertexIndex).data)) {
+                listGraph.addEdgeAndWeight(listGraph.getVertexByIndex(i).data, listGraph.getVertexByIndex(vertexIndex).data, weight);
+            }
+        }
+        drawListGraph();
     }
 
     @javafx.fxml.FXML

@@ -25,8 +25,8 @@ class SinglyLinkedListGraphTest {
 
         graph.addEdgeAndWeight("A","B","Cozumel");
         graph.addEdgeAndWeight("A","E","Ambergris Caye");
-        graph.addEdgeAndWeight("A","H","Bocas del Toro");
         graph.addEdgeAndWeight("B","C","Útila");
+        graph.addEdgeAndWeight("A","H","Bocas del Toro");
         graph.addEdgeAndWeight("C","D","Roatán");
         graph.addEdgeAndWeight("D","H","Isla Colón");
         graph.addEdgeAndWeight("E","F","Isla de San Martín");
@@ -42,6 +42,15 @@ class SinglyLinkedListGraphTest {
         System.out.println(graph.dfs());
         System.out.println(graph.bfs());
 
+        graph.removeVertex("B");
+        graph.removeVertex("H");
+        graph.removeVertex("J");
+        graph.removeVertex("I");
+
+        System.out.println("\n"+graph.dfs());
+        System.out.println(graph.bfs());
+
+        System.out.println("\n"+graph.toString());
 
     }
 }
