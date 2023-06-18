@@ -4,8 +4,6 @@ import domain.*;
 import domain.list.ListException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -17,12 +15,8 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import ucr.lab.Kruskal;
+import domain.Kruskal;
 import util.Utility;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public class MSTKruskalAndPrimController {
 
@@ -43,6 +37,9 @@ public class MSTKruskalAndPrimController {
     private AdjacencyListGraph adjacencyListGraph;
     private AdjacencyMatrixGraph adjacencyMatrixGraph;
     private SinglyLinkedListGraph singlyLinkedListGraph;
+    private AdjacencyListGraph kruskalAdjacencyListGraph;
+    private AdjacencyMatrixGraph kruskalAdjacencyMatrixGraph;
+    private SinglyLinkedListGraph kruskalSinglyLinkedListGraph;
     private ToggleGroup group;
     Kruskal kruskal ;
 
@@ -50,8 +47,8 @@ public class MSTKruskalAndPrimController {
     void initialize(){
         kruskal= new Kruskal();
         singlyLinkedListGraph = new SinglyLinkedListGraph();
-        adjacencyMatrixGraph = new AdjacencyMatrixGraph(26);
-        adjacencyListGraph = new AdjacencyListGraph(26);
+        adjacencyMatrixGraph = new AdjacencyMatrixGraph(10);
+        adjacencyListGraph = new AdjacencyListGraph(10);
         group = new ToggleGroup();
         rbtAdjMatrix.setToggleGroup(group);
         rbtAdjList.setToggleGroup(group);
@@ -63,43 +60,80 @@ public class MSTKruskalAndPrimController {
 
     @FXML
     void onActionRandomize(ActionEvent event) {
-        if (rbtLinkedList.isSelected()){
+        if (rbtLinkedList.isSelected() && rbtKruskal.isSelected()){
             randomizeGraph(singlyLinkedListGraph);
-            drawGraph(singlyLinkedListGraph);
-        } else if (rbtAdjList.isSelected()) {
+            drawGraph(singlyLinkedListGraph, this.pnGraph);
+            kruskalSinglyLinkedListGraph = (SinglyLinkedListGraph) kruskal.kruskalAlgorithm(singlyLinkedListGraph);
+            drawGraph(kruskalSinglyLinkedListGraph, this.pnMST);
+        } else if (rbtAdjList.isSelected() && rbtKruskal.isSelected()) {
             randomizeGraph(adjacencyListGraph);
-            drawGraph(adjacencyListGraph);
-        } else if (rbtAdjMatrix.isSelected()) {
+            drawGraph(adjacencyListGraph, this.pnGraph);
+            kruskalAdjacencyListGraph = (AdjacencyListGraph) kruskal.kruskalAlgorithm(adjacencyListGraph);
+            drawGraph(kruskalAdjacencyListGraph, this.pnMST);
+        } else if (rbtAdjMatrix.isSelected() && rbtKruskal.isSelected()) {
             randomizeGraph(adjacencyMatrixGraph);
-            drawGraph(adjacencyMatrixGraph);
+            drawGraph(adjacencyMatrixGraph, this.pnGraph);
+            kruskalAdjacencyMatrixGraph = (AdjacencyMatrixGraph) kruskal.kruskalAlgorithm(adjacencyMatrixGraph);
+            drawGraph(kruskalAdjacencyMatrixGraph, this.pnMST);
         }else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
-            alert.setContentText("Seleccione un tipo de grafo para empezar");
+            alert.setContentText("Seleccione un tipo de grafo y un algoritmo MST para randomizar");
             alert.showAndWait();
         }
     }
 
     @FXML
     void setOnActionAdjMatrix(ActionEvent event) {
+        pnMST.getChildren().clear();
+        rbtKruskal.setSelected(false);
         randomizeGraph(adjacencyMatrixGraph);
-        drawGraph(adjacencyMatrixGraph);
+        drawGraph(adjacencyMatrixGraph, this.pnGraph);
     }
 
     @FXML
     void onActionAdjList(ActionEvent event) {
+        pnMST.getChildren().clear();
+        rbtKruskal.setSelected(false);
         randomizeGraph(adjacencyListGraph);
-        drawGraph(adjacencyListGraph);
+        drawGraph(adjacencyListGraph, this.pnGraph);
     }
 
     @FXML
     void onActionLinkedList(ActionEvent event) {
+        pnMST.getChildren().clear();
+        rbtKruskal.setSelected(false);
         randomizeGraph(singlyLinkedListGraph);
-        drawGraph(singlyLinkedListGraph);
+        drawGraph(singlyLinkedListGraph, this.pnGraph);
+    }
+
+    @FXML
+    void onActionKruskal(ActionEvent event) {
+        if (rbtAdjMatrix.isSelected() || rbtAdjList.isSelected() || rbtLinkedList.isSelected()){
+            if (rbtAdjMatrix.isSelected()){
+                kruskalAdjacencyMatrixGraph = (AdjacencyMatrixGraph) kruskal.kruskalAlgorithm(adjacencyMatrixGraph);
+                drawGraph(kruskalAdjacencyMatrixGraph, this.pnMST);
+            } else if (rbtAdjList.isSelected()) {
+                kruskalAdjacencyListGraph = (AdjacencyListGraph) kruskal.kruskalAlgorithm(adjacencyListGraph);
+                drawGraph(kruskalAdjacencyListGraph, this.pnMST);
+            }else {
+                kruskalSinglyLinkedListGraph = (SinglyLinkedListGraph) kruskal.kruskalAlgorithm(singlyLinkedListGraph);
+                drawGraph(kruskalSinglyLinkedListGraph, this.pnMST);
+            }
+
+            //poner aquí el código para ejecutar el algoritmo y mostrar el grafo
+        }else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setContentText("Seleccione un tipo de grafo para empezar");
+            rbtKruskal.setSelected(false);
+            alert.showAndWait();
+        }
     }
 
     @FXML
     void onActionPrim(ActionEvent event) {
+
         if (rbtAdjMatrix.isSelected() || rbtAdjList.isSelected() || rbtLinkedList.isSelected()){
             //poner aquí el código para ejecutar el algoritmo y mostrar el grafo
         }else {
@@ -107,23 +141,6 @@ public class MSTKruskalAndPrimController {
             alert.setHeaderText(null);
             alert.setContentText("Seleccione un tipo de grafo para empezar");
             rbtPrim.setSelected(false);
-            alert.showAndWait();
-        }
-    }
-
-    @FXML
-    void onActionKruskal(ActionEvent event) throws GraphException {
-        if (rbtAdjMatrix.isSelected() || rbtAdjList.isSelected() || rbtLinkedList.isSelected()){
-            if (rbtAdjMatrix.isSelected()){
-              // kruskal.init(adjacencyMatrixGraph);
-            }
-
-                //poner aquí el código para ejecutar el algoritmo y mostrar el grafo
-        }else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setContentText("Seleccione un tipo de grafo para empezar");
-            rbtKruskal.setSelected(false);
             alert.showAndWait();
         }
     }
@@ -182,12 +199,12 @@ public class MSTKruskalAndPrimController {
         }
     }
 
-    private void drawGraph(Graph graph){
-        pnGraph.getChildren().clear();
+    private void drawGraph(Graph graph, Pane pane){
+        pane.getChildren().clear();
         int numNodes = 0;
-        double centerY = pnGraph.getPrefHeight()/2;
-        double centerX = pnGraph.getPrefWidth()/2;
-        double radius = pnGraph.getPrefHeight()/2 - 20;
+        double centerY = pane.getPrefHeight()/2;
+        double centerX = pane.getPrefWidth()/2;
+        double radius = pane.getPrefHeight()/2 - 20;
         Circle[] circles;
         Text[] texts;
 
@@ -216,17 +233,17 @@ public class MSTKruskalAndPrimController {
                 data.setY(y + textHeight / 4);
                 texts[i] = data;
 
-                pnGraph.getChildren().add(node);
+                pane.getChildren().add(node);
             }
         } catch (ListException e) {
             throw new RuntimeException(e);
         }
 
-        drawEdges(circles, graph);
-        pnGraph.getChildren().addAll(texts);
+        drawEdges(circles, graph, pane);
+        pane.getChildren().addAll(texts);
     }
 
-    private void drawEdges(Circle[] circles, Graph graph) {
+    private void drawEdges(Circle[] circles, Graph graph, Pane pane) {
 
         try {
             int n = graph.size();
@@ -246,7 +263,7 @@ public class MSTKruskalAndPrimController {
                             Circle nodoB = null;
                             if (graph instanceof SinglyLinkedListGraph) nodoB = circles[b - 1];
                             else nodoB = circles[b];
-                            drawLine(nodoA, nodoB, vA.data, vB);
+                            drawLine(nodoA, nodoB, vA.data, vB, pane);
                         }
                     }
 
@@ -260,7 +277,7 @@ public class MSTKruskalAndPrimController {
                             Circle nodoB = circles[j];
                             Vertex vA = graph.getVertexByIndex(i);
                             Vertex vB = graph.getVertexByIndex(j);
-                            drawLine(nodoA, nodoB, vA.data, vB.data);
+                            drawLine(nodoA, nodoB, vA.data, vB.data, pane);
                         }
                     }
                 }
@@ -270,9 +287,9 @@ public class MSTKruskalAndPrimController {
         }
     }
 
-    private void drawLine(Circle nodoA, Circle nodoB, Object vA, Object vB){
-        double centerY = pnGraph.getPrefHeight()/2;
-        double centerX = pnGraph.getPrefWidth()/2;
+    private void drawLine(Circle nodoA, Circle nodoB, Object vA, Object vB, Pane pane){
+        double centerY = pane.getPrefHeight()/2;
+        double centerX = pane.getPrefWidth()/2;
         double endX = centerX + (nodoB.getCenterX() - centerX) * 0.9;
         double endY = centerY + (nodoB.getCenterY() - centerY) * 0.9;
         double startX = centerX + (nodoA.getCenterX() - centerX) * 0.9;
@@ -287,7 +304,7 @@ public class MSTKruskalAndPrimController {
         tooltip.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 
         line.setOnMouseEntered(event -> {
-            tooltip.show(pnGraph, event.getScreenX(), event.getScreenY() + 10);
+            tooltip.show(pane, event.getScreenX(), event.getScreenY() + 10);
             line.setStroke(Color.RED);
             line.setStrokeWidth(6);
         });
@@ -297,7 +314,7 @@ public class MSTKruskalAndPrimController {
             line.setStroke(Color.BLACK);
             line.setStrokeWidth(3);
         });
-        this.pnGraph.getChildren().add(line);
+        pane.getChildren().add(line);
     }
 
 }
