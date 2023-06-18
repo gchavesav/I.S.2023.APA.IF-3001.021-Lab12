@@ -37,12 +37,12 @@
                   <Font name="Lucida Bright" size="26.0" />
                </font>
             </Label>
-            <TableView layoutX="544.0" layoutY="96.0" prefHeight="499.0" prefWidth="355.0">
-              <columns>
-                <TableColumn fx:id="positionColum" prefWidth="120.0" text="Position" />
-                <TableColumn fx:id="vertexColum" prefWidth="127.0" text="Vertex" />
+            <TableView fx:id="tableView" layoutX="544.0" layoutY="96.0" prefHeight="499.0" prefWidth="355.0">
+               <columns>
+                  <TableColumn fx:id="positionColum" prefWidth="120.0" text="Position" />
+                  <TableColumn fx:id="vertexColum" prefWidth="127.0" text="Vertex" />
                   <TableColumn fx:id="DistanceColum" minWidth="7.0" prefWidth="107.0" text="Distance" />
-              </columns>
+               </columns>
             </TableView>
             <Pane fx:id="base" layoutX="32.0" layoutY="254.0" prefHeight="321.0" prefWidth="482.0" />
             <Label alignment="CENTER" layoutX="13.0" layoutY="48.0" prefHeight="31.0" prefWidth="236.0" style="-fx-background-color: #d7d7d7;" text="Graph Type">
