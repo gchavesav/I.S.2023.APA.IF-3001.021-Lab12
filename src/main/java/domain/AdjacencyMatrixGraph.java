@@ -113,8 +113,9 @@ public class AdjacencyMatrixGraph implements Graph {
         }
         return !(util.Utility.compare(adjacencyMatrix[indexOf(a)][indexOf(b)], 0)==0);
     }
-    
-    private int indexOf(Object element){
+
+    @Override
+    public int indexOf(Object element){
         for (int i = 0; i < counter; i++) {
             if(util.Utility.compare(vertexList[i].data, element)==0){
                 return i;
@@ -217,7 +218,7 @@ public class AdjacencyMatrixGraph implements Graph {
                         result+="_____WEIGHT: "+adjacencyMatrix[i][j];
                     }
                 }
-            }   
+            }
         }
         return result;
     }
@@ -229,8 +230,8 @@ public class AdjacencyMatrixGraph implements Graph {
     /***
      * RECORRIDO EN PROFUNDIDAD
      * @return 
-     * @throws domain.GraphException
-     * @throws domain.stack.StackException
+     * @throws GraphException
+     * @throws StackException
      */
     @Override
     public String dfs() throws GraphException, StackException {
@@ -258,7 +259,7 @@ public class AdjacencyMatrixGraph implements Graph {
     /***
      * RECORRIDO POR AMPLITUD
      * @return 
-     * @throws domain.GraphException
+     * @throws GraphException
      */
     @Override
     public String bfs() throws GraphException, QueueException, ListException {
@@ -297,5 +298,6 @@ public class AdjacencyMatrixGraph implements Graph {
         }//for i
         return -1;
     }
+
     
 }

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="678.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MSTKruskalAndPrimController">
+   <center>
+      <AnchorPane prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="552.0" prefWidth="1030.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <HBox alignment="CENTER" spacing="100.0">
+                     <children>
+                        <VBox alignment="CENTER_LEFT" spacing="5.0">
+                           <children>
+                              <Label text="Graphic type">
+                                 <font>
+                                    <Font name="Lucida Bright" size="24.0" />
+                                 </font>
+                              </Label>
+                              <RadioButton fx:id="rbtAdjMatrix" mnemonicParsing="false" onAction="#setOnActionAdjMatrix" text="Adjacency Matrix">
+                                 <font>
+                                    <Font name="Lucida Bright" size="24.0" />
+                                 </font>
+                              </RadioButton>
+                              <RadioButton fx:id="rbtAdjList" mnemonicParsing="false" onAction="#onActionAdjList" text="Adjacency List">
+                                 <font>
+                                    <Font name="Lucida Bright" size="24.0" />
+                                 </font>
+                              </RadioButton>
+                              <RadioButton fx:id="rbtLinkedList" mnemonicParsing="false" onAction="#onActionLinkedList" text="Linked List">
+                                 <font>
+                                    <Font name="Lucida Bright" size="24.0" />
+                                 </font>
+                              </RadioButton>
+                           </children>
+                        </VBox>
+                        <Button mnemonicParsing="false" onAction="#onActionRandomize" style="-fx-background-color: #027a8e;" text="Randomize" textFill="WHITE">
+                           <font>
+                              <Font name="Lucida Bright Demibold" size="24.0" />
+                           </font>
+                        </Button>
+                        <VBox alignment="CENTER_LEFT" spacing="5.0">
+                           <children>
+                              <Label text="MST Algortithm">
+                                 <font>
+                                    <Font name="Lucida Bright" size="24.0" />
+                                 </font>
+                              </Label>
+                              <RadioButton fx:id="rbtKruskal" mnemonicParsing="false" onAction="#onActionKruskal" text="Kruskal">
+                                 <font>
+                                    <Font name="Lucida Bright" size="24.0" />
+                                 </font>
+                              </RadioButton>
+                              <RadioButton fx:id="rbtPrim" mnemonicParsing="false" onAction="#onActionPrim" text="Prim">
+                                 <font>
+                                    <Font name="Lucida Bright" size="24.0" />
+                                 </font>
+                              </RadioButton>
+                           </children>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <Pane fx:id="pnGraph" prefHeight="400.0" prefWidth="400.0" />
+                        <Pane fx:id="pnMST" prefHeight="400.0" prefWidth="400.0" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </center>
+   <top>
+      <AnchorPane prefHeight="90.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" layoutX="296.0" layoutY="-5.0" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #027a8e;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label text="Minimun Spanning Tree (Kruskal and Prim)" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold Italic" size="40.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </top>
+</BorderPane>

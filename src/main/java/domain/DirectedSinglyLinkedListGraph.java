@@ -170,22 +170,22 @@ public class DirectedSinglyLinkedListGraph implements Graph {
     public void removeVertex(Object element) throws GraphException, ListException {
         boolean removed = false;
         if(!vertexList.isEmpty() && containsVertex(element)){
-             for (int i = 1; !removed&&i <= vertexList.size(); i++) {
-                 Vertex vertex = (Vertex) vertexList.getNode(i).data;
-                 if(util.Utility.compare(vertex.data, element)==0){ //ya lo encontro
-                     vertexList.remove(new Vertex(element));
-                     removed = true;
-                     //ahora se debe eliminar la entrada de ese vertice de todas
-                     //las listas de aristas de los otros vertices
-                     int n = vertexList.size();
-                     for (int j=1; vertexList!=null&&!vertexList.isEmpty()&&j<=n; j++) {
-                         vertex = (Vertex) vertexList.getNode(j).data;
-                         if(!vertex.edgesList.isEmpty())
+            for (int i = 1; !removed&&i <= vertexList.size(); i++) {
+                Vertex vertex = (Vertex) vertexList.getNode(i).data;
+                if(util.Utility.compare(vertex.data, element)==0){ //ya lo encontro
+                    vertexList.remove(new Vertex(element));
+                    removed = true;
+                    //ahora se debe eliminar la entrada de ese vertice de todas
+                    //las listas de aristas de los otros vertices
+                    int n = vertexList.size();
+                    for (int j=1; vertexList!=null&&!vertexList.isEmpty()&&j<=n; j++) {
+                        vertex = (Vertex) vertexList.getNode(j).data;
+                        if(!vertex.edgesList.isEmpty())
                             addVertexEdgeWeight(vertex.data, element, null, "remove");
-                     }
-                 }//if
-             }//for i
-         }//if
+                    }
+                }//if
+            }//for i
+        }//if
     }
 
     @Override
@@ -310,4 +310,5 @@ public class DirectedSinglyLinkedListGraph implements Graph {
         }
         return null; //no existe el vertice
     }
+
 }

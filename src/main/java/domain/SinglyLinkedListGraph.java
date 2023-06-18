@@ -31,6 +31,7 @@ public class SinglyLinkedListGraph implements Graph {
         this.queue = new LinkedQueue();
     }
 
+    @Override
     public int indexOf(Object element) throws ListException {
         for(int i=1;i<=vertexList.size();i++){
             Vertex vertex = (Vertex)vertexList.getNode(i).data;
@@ -232,8 +233,8 @@ public class SinglyLinkedListGraph implements Graph {
     /***
      * RECORRIDO EN PROFUNDIDAD
      * @return 
-     * @throws domain.GraphException
-     * @throws domain.stack.StackException
+     * @throws GraphException
+     * @throws StackException
      */
     @Override
     public String dfs() throws GraphException, StackException, ListException {
@@ -263,7 +264,7 @@ public class SinglyLinkedListGraph implements Graph {
     /***
      * RECORRIDO POR AMPLITUD
      * @return 
-     * @throws domain.GraphException
+     * @throws GraphException
      */
     @Override
     public String bfs() throws GraphException, QueueException, ListException {
