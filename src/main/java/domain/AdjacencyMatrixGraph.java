@@ -114,7 +114,7 @@ public class AdjacencyMatrixGraph implements Graph {
         return !(util.Utility.compare(adjacencyMatrix[indexOf(a)][indexOf(b)], 0)==0);
     }
     
-    private int indexOf(Object element){
+    public int indexOf(Object element){
         for (int i = 0; i < counter; i++) {
             if(util.Utility.compare(vertexList[i].data, element)==0){
                 return i;
