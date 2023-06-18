@@ -3,9 +3,12 @@ package controller;
 import domain.DirectedSinglyLinkedListGraph;
 import domain.GraphException;
 import domain.list.ListException;
+import domain.stack.StackException;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -23,6 +26,9 @@ public class DirectedGraphController
     @javafx.fxml.FXML
     private Group graf;
 
+    private TextInputDialog dialog;
+
+    private Alert alert;
     private DirectedSinglyLinkedListGraph matrixGraph;
 
     @javafx.fxml.FXML
@@ -50,10 +56,10 @@ public class DirectedGraphController
             int vertexIndex = util.Utility.random(1,10);
             int vertexIndex2 = util.Utility.random(1,10);
             if (vertexIndex != vertexIndex2) {
-                matrixGraph.addEdge(matrixGraph.getVertexByIndex(i).data, matrixGraph.getVertexByIndex(vertexIndex).data);
+                matrixGraph.addEdgeAndWeight(matrixGraph.getVertexByIndex(i).data, matrixGraph.getVertexByIndex(vertexIndex).data, util.Utility.random(200,1000));
             }
             if (!matrixGraph.containsEdge(matrixGraph.getVertexByIndex(i).data,matrixGraph.getVertexByIndex(vertexIndex).data)) {
-                matrixGraph.addEdge(matrixGraph.getVertexByIndex(i).data, matrixGraph.getVertexByIndex(vertexIndex).data);
+                matrixGraph.addEdgeAndWeight(matrixGraph.getVertexByIndex(i).data, matrixGraph.getVertexByIndex(vertexIndex).data, util.Utility.random(200,1000));
             }
 
 
@@ -191,10 +197,10 @@ public class DirectedGraphController
             int vertexIndex = util.Utility.random(1,10);
             int vertexIndex2 = util.Utility.random(1,10);
             if (vertexIndex != vertexIndex2) {
-                matrixGraph.addEdge(matrixGraph.getVertexByIndex(i).data, matrixGraph.getVertexByIndex(vertexIndex).data);
+                matrixGraph.addEdgeAndWeight(matrixGraph.getVertexByIndex(i).data, matrixGraph.getVertexByIndex(vertexIndex).data, util.Utility.random(200,1000));
             }
             if (!matrixGraph.containsEdge(matrixGraph.getVertexByIndex(i).data,matrixGraph.getVertexByIndex(vertexIndex).data)) {
-                matrixGraph.addEdge(matrixGraph.getVertexByIndex(i).data, matrixGraph.getVertexByIndex(vertexIndex).data);
+                matrixGraph.addEdgeAndWeight(matrixGraph.getVertexByIndex(i).data, matrixGraph.getVertexByIndex(vertexIndex).data, util.Utility.random(200,1000));
             }
 
 
@@ -203,7 +209,21 @@ public class DirectedGraphController
         drawMatrixGraph();
     }
 
-    public void containsVertexOnAction(ActionEvent actionEvent) {
+    public void containsVertexOnAction(ActionEvent actionEvent) throws GraphException, ListException {
+        dialog = util.FXUtility.dialog("Vertex Contains","Contains: ");
+        dialog.showAndWait();
+        String value = dialog.getResult();
+        this.alert=util.FXUtility.alert("Vertex Contains","Contains: ");
+        alert.setAlertType(Alert.AlertType.INFORMATION);
+        try {
+            alert.setContentText(String.valueOf(matrixGraph.containsVertex(value)));
+            alert.showAndWait();
+        } catch (GraphException e) {
+            throw new RuntimeException(e);
+        } catch (ListException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public void containsEdgeOnAction(ActionEvent actionEvent) {
@@ -215,7 +235,7 @@ public class DirectedGraphController
     public void bfsTourOnAction(ActionEvent actionEvent) {
     }
 
-    public void dfsTourOnAction(ActionEvent actionEvent) {
-
+    public void dfsTourOnAction(ActionEvent actionEvent) throws GraphException, ListException, StackException {
+        textareaInfo.setText(matrixGraph.dfs());
     }
 }
