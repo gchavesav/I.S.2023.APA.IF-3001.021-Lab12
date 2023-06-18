@@ -3,6 +3,7 @@ package controller;
 import domain.*;
 import domain.list.ListException;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,23 +16,14 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import util.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DijkstraController {
-
     @FXML
-    private TableView<List<String>> tableView;
-    //private TableView<List<String>> tableView;
-    @FXML
-    private TableColumn<String, String> DistanceColum;
-    @FXML
-    private TableColumn<String, String> vertexColum;
-    @FXML
-    private TableColumn<String, String> positionColum;
-    //<String, String>
-
+    private TableView tableView;
     @FXML
     private RadioButton adjacencyMatrixRadiobutton;
     @FXML
@@ -41,180 +33,95 @@ public class DijkstraController {
 
     @FXML
     private Pane base;
-    AdjacencyListGraph adjacencyListGraph;
-    AdjacencyMatrixGraph adjacencyMatrixGraph;
-
+    private AdjacencyListGraph adjacencyListGraph;
+    private AdjacencyMatrixGraph adjacencyMatrixGraph;
+    private SinglyLinkedListGraph singlyLinkedGraph = new SinglyLinkedListGraph();
     DijkstraAlgorithm dijkstraAlgorithm;
-    private SinglyLinkedListGraph linkedGraph = new SinglyLinkedListGraph();
-    private List<String> listOfEdges = new ArrayList<>();
+    private ToggleGroup group;
 
 
     @FXML
-    public void initialize() throws ListException {
-        ToggleGroup toggleGroup = new ToggleGroup();
+    public void initialize() {
+        dijkstraAlgorithm = new DijkstraAlgorithm();
+        adjacencyListGraph = new AdjacencyListGraph(26);
+        adjacencyMatrixGraph = new AdjacencyMatrixGraph(26);
 
-        linkedListRadiobutton.setToggleGroup(toggleGroup);
-        adjencyListRadiobutton.setToggleGroup(toggleGroup);
-        adjacencyMatrixRadiobutton.setToggleGroup(toggleGroup);
-
-//        adjencyListRadiobutton.setSelected(true);
-//        adjacencyListGraph = new AdjacencyListGraph(26);
-//        randomizeGraph();
-//        drawGraph();
-
-        linkedListRadiobutton.setOnAction(event -> {
-            adjencyListRadiobutton.setSelected(false);
-            adjacencyMatrixRadiobutton.setSelected(false);
-            linkedGraph = new SinglyLinkedListGraph();
-            try {
-                randomizeGraph();
-                drawGraph();
-            } catch (ListException e) {
-                throw new RuntimeException(e);
-            }
-
-
-        });
-
-        adjencyListRadiobutton.setOnAction(event -> {
-            linkedListRadiobutton.setSelected(false);
-            adjacencyMatrixRadiobutton.setSelected(false);
-            adjacencyListGraph = new AdjacencyListGraph(26);
-            try {
-                randomizeGraph();
-                drawGraph();
-            } catch (ListException e) {
-                throw new RuntimeException(e);
-            }
-
-        });
-
-        adjacencyMatrixRadiobutton.setOnAction(event -> {
-            linkedListRadiobutton.setSelected(false);
-            adjencyListRadiobutton.setSelected(false);
-            adjacencyMatrixGraph = new AdjacencyMatrixGraph(26);
-            randomizeGraph();
-            try {
-                drawGraph();
-            } catch (ListException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        group = new ToggleGroup();
+        linkedListRadiobutton.setToggleGroup(group);
+        adjencyListRadiobutton.setToggleGroup(group);
+        adjacencyMatrixRadiobutton.setToggleGroup(group);
 
         //llenar la tabla
 
-        this.positionColum.setCellValueFactory(data -> new ReadOnlyObjectWrapper<>(data.getValue()));
-        this.vertexColum.setCellValueFactory(data -> new ReadOnlyObjectWrapper<>(data.getValue()));
-        this.DistanceColum.setCellValueFactory(data -> new ReadOnlyObjectWrapper<>(data.getValue()));
-        //se llena el tableVIew y sus columnas con los datos de la lista local, que a su vez obtiene los datos de la
-        //lista global
-        if (listOfEdges != null && !listOfEdges.isEmpty()) {
-            this.tableView.setItems(getData());
-        }
-        this.tableView.setItems(getData());
+        TableColumn<List<String>, String> distanceColum = new TableColumn<>("Distancia");
+        TableColumn<List<String>, String> vertexColum = new TableColumn<>("Vertice");
+        TableColumn<List<String>, String> positionColum = new TableColumn<>("Posicion");
+
+        positionColum.setCellValueFactory(data->new SimpleStringProperty(data.getValue().get(0)));
+        vertexColum.setCellValueFactory(data->new SimpleStringProperty(data.getValue().get(1)));
+        distanceColum.setCellValueFactory(data->new SimpleStringProperty(data.getValue().get(2)));
+
+        this.tableView.getColumns().add(positionColum);
+        this.tableView.getColumns().add(vertexColum);
+        this.tableView.getColumns().add(distanceColum);
+
     }
 
-    //devuelve una lista observable que contiene una lista de solo Strings
     private ObservableList<List<String>> getData() {
         ObservableList<List<String>> data = FXCollections.observableArrayList();
 
         String position;
-        Vertex vertex;
-        String distance;
+        Vertex vertex = null;
+        String distance = null;
 
-        while (!listOfEdges.isEmpty()) {//vaciamos listPerson en la tableView
-            for (int i = 0; i < listOfEdges.size(); i++) {
-                position = String.valueOf(i);
-                distance = String.valueOf(i);
-            }
+        for (int i = 0; i < 10; i++) {
+            List<String> rowData = new ArrayList<>();
+
+            position = String.valueOf(i);
+            //distance = String.valueOf(i+1);
+
+
+            rowData.add(position);
+
 
             if (adjencyListRadiobutton.isSelected()) {
-                for (int i = 0; i < listOfEdges.size(); i++) {
-                    vertex = adjacencyListGraph.getVertexByIndex(i);
-                    //   distance = dijkstraAlgorithm.minDistance(adjacencyListGraph.getVertexByIndex(i), new boolean[]{false});
-                }
-
+                vertex = adjacencyListGraph.getVertexByIndex(i);
+                rowData.add(String.valueOf(vertex.data));
+                distance = String.valueOf(Utility.random(200,1000));
             } else if (adjacencyMatrixRadiobutton.isSelected()) {
-                for (int i = 0; i < listOfEdges.size(); i++) {
-                    vertex = adjacencyMatrixGraph.getVertexByIndex(i);
-                    //   distance = listOfEdges;
-                }
+                vertex = adjacencyMatrixGraph.getVertexByIndex(i);
+                rowData.add(String.valueOf(vertex.data));
+                distance =String.valueOf(Utility.random(200,1000));
             } else {
-                for (int i = 0; i < listOfEdges.size(); i++) {
-                    vertex = linkedGraph.getVertexByIndex(i);
-                    // distance = listOfEdges;
-                }
-
+                vertex = singlyLinkedGraph.getVertexByIndex(i+1);
+                rowData.add(String.valueOf(vertex.data));
+                distance = String.valueOf(Utility.random(200,1000));
             }
+            rowData.add(distance);
 
+            data.add(rowData);
         }
-
 
         return data;
     }
 
-    private void randomizeGraph() {
-        if (adjencyListRadiobutton.isSelected()) {
-            adjacencyListGraph.clear();
-            listOfEdges.clear();
-            try {
-                adjacencyListGraph.addVertex(util.Utility.random(10));
-                for (int i = 0; i < 10 - 1; i++) {
-                    int number = util.Utility.random(10);
-                    if (!adjacencyListGraph.containsVertex(number)) {
-                        adjacencyListGraph.addVertex(number);
-                    } else {
-                        i--;
-                    }
-                }
-                for (int i = 0; i < 5; i++) {
-                    addEdge();
-                }
-            } catch (GraphException e) {
-                e.printStackTrace();
-                System.out.println("6");
+
+    private void randomizeGraph(Graph graph) {
+        graph.clear();
+
+        try {
+            graph.addVertex(Utility.random(1, 99));
+            for (int i = 0; i < 10 - 1; i++) {
+                int data = Utility.random(1, 99);
+                if (!graph.containsVertex(data)) graph.addVertex(data);
+                else i--;
             }
-        } else if (adjacencyMatrixRadiobutton.isSelected()) {
-            adjacencyMatrixGraph.clear();
-            listOfEdges.clear();
-            try {
-                adjacencyMatrixGraph.addVertex(util.Utility.random(10));
-                for (int i = 0; i < 10 - 1; i++) {
-                    int number = util.Utility.random(10);
-                    if (!adjacencyMatrixGraph.containsVertex(number)) {
-                        adjacencyMatrixGraph.addVertex(number);
-                    } else {
-                        i--;
-                    }
-                }
-                for (int i = 0; i < 5; i++) {
-                    addEdge();
-                }
-            } catch (GraphException e) {
-                e.printStackTrace();
-                System.out.println("6");
+            for (int i = 0; i < 15; i++) {
+                addEdge(graph);
             }
 
-        } else if (linkedListRadiobutton.isSelected()) {
-            linkedGraph.clear();
-            listOfEdges.clear();
-            try {
-                linkedGraph.addVertex(util.Utility.random(10));
-                for (int i = 0; i < 10 - 1; i++) {
-                    int number = util.Utility.random(10);
-                    if (!linkedGraph.containsVertex(number)) {
-                        linkedGraph.addVertex(number);
-                    } else {
-                        i--;
-                    }
-                }
-                for (int i = 0; i < 5; i++) {
-                    addEdge();
-                }
-            } catch (ListException | GraphException e) {
-                e.printStackTrace();
-                System.out.println("5");
-            }
+        } catch (GraphException | ListException e) {
+            e.printStackTrace();
         }
     }
 
@@ -227,358 +134,170 @@ public class DijkstraController {
         return sum;
     }
 
-    private void addEdge() {
+    private void addEdge(Graph graph) {
         int a = 0;
         int b = 0;
         int vertexA;
         int vertexB;
-        int dataList;
-        int dataListInverted;
-        if (adjencyListRadiobutton.isSelected()) {
-            try {
-                /*if (adjacencyListGraph.size() >= calcularMaxEdges(adjacencyListGraph.size())) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText(null);
-                    alert.setContentText("No se pueden agregar más Aristas");
-                    alert.showAndWait();
-                    return;
-                }*/
-                do {
-                    a = util.Utility.random(0, adjacencyListGraph.size());
-                    b = util.Utility.random(0, adjacencyListGraph.size());
-                    vertexA = (int) (adjacencyListGraph.getVertexByIndex(a).data);
-                    vertexB = (int) (adjacencyListGraph.getVertexByIndex(b).data);
-                    dataList = vertexA + vertexB;
-                    dataListInverted = dataList + dataList;
-                } while (adjacencyListGraph.containsEdge(vertexA, vertexB) || a == b || listOfEdges.contains(dataList) || listOfEdges.contains(dataListInverted));
-                adjacencyListGraph.addEdgeAndWeight(vertexA, vertexB, util.Utility.random(200, 1000));
-                listOfEdges.add(String.valueOf(dataList));
-            } catch (ListException | GraphException e) {
-                /*Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText(null);
-                alert.setContentText(String.valueOf(e));
-                alert.showAndWait();
-                System.out.println("4");*/
-            }
-        } else if (adjacencyMatrixRadiobutton.isSelected()) {
-            try {
-              /*  if (adjacencyMatrixGraph.size() >= calcularMaxEdges(adjacencyMatrixGraph.size())) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText(null);
-                    alert.setContentText("No se pueden agregar más Aristas");
-                    alert.showAndWait();
-                    return;
-                }*/
-                do {
-                    a = util.Utility.random(0, adjacencyMatrixGraph.size());
-                    b = util.Utility.random(0, adjacencyMatrixGraph.size());
-                    vertexA = (int) (adjacencyMatrixGraph.getVertexByIndex(a).data);
-                    vertexB = (int) (adjacencyMatrixGraph.getVertexByIndex(b).data);
-                    dataList = vertexA + vertexB;
-                    dataListInverted = dataList + dataList; //|| listOfEdges.contains(dataList) || listOfEdges.contains(dataListInverted
-                } while (adjacencyMatrixGraph.containsEdge(vertexA, vertexB) || a == b);
-                adjacencyMatrixGraph.addEdgeAndWeight(vertexA, vertexB, util.Utility.random(200, 1000));
-                listOfEdges.add(String.valueOf(dataList));
-            } catch (GraphException e) {
-                /*Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText(null);
-                alert.setContentText(String.valueOf(e));
-                alert.showAndWait();
-                System.out.println("4")*/
-                ;
-            }
-        } else if (linkedListRadiobutton.isSelected()) {
-            try {
-               /* if (listOfEdges.size() >= calcularMaxEdges(linkedGraph.size())) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText(null);
-                    alert.setContentText("No se pueden agregar más Aristas");
-                    alert.showAndWait();
-                    return;
-                }*/
-                do {
-                    a = util.Utility.random(1, linkedGraph.size());
-                    b = util.Utility.random(1, linkedGraph.size());
-                    vertexA = (int) (linkedGraph.getVertexByIndex(a).data);
-                    vertexB = (int) (linkedGraph.getVertexByIndex(b).data);
-                    dataList = vertexA + vertexB;
-                    dataListInverted = dataList + dataList;
-                } while (linkedGraph.containsEdge(vertexA, vertexB) || a == b || listOfEdges.contains(dataList) || listOfEdges.contains(dataListInverted));
-                linkedGraph.addEdgeAndWeight(vertexA, vertexB, util.Utility.random(200, 1000));
-                listOfEdges.add(String.valueOf(dataList));
-            } catch (ListException | GraphException e) {
-               /* Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText(null);
-                alert.setContentText(String.valueOf(e));
-                alert.showAndWait();
-                System.out.println("3");*/
-            }
+        try {
+            do {
+                if (graph instanceof SinglyLinkedListGraph) {
+                    a = util.Utility.random(1, graph.size());
+                    b = util.Utility.random(1, graph.size());
+
+                } else {
+                    a = util.Utility.random(0, graph.size() - 1);
+                    b = util.Utility.random(0, graph.size() - 1);
+                }
+                vertexA = (int) graph.getVertexByIndex(a).data;
+                vertexB = (int) graph.getVertexByIndex(b).data;
+
+            } while (graph.containsEdge(vertexA, vertexB) || a == b);
+            graph.addEdgeAndWeight(vertexA, vertexB, util.Utility.random(1, 50));
+        } catch (GraphException e) {
+            throw new RuntimeException(e);
+        } catch (ListException e) {
+            throw new RuntimeException(e);
         }
     }
 
 
     @FXML
-    void randomizeOnAction(ActionEvent event) throws ListException {
-        randomizeGraph();
-        drawGraph();
-    }
-
-    private void drawGraph() throws ListException {
+    void randomizeOnAction(ActionEvent event) {
         if (adjencyListRadiobutton.isSelected()) {
-            base.getChildren().clear();
-            int numNodes = 0;
-            numNodes = adjacencyListGraph.size();
-
-            double centerY = base.getPrefHeight() / 2;
-            double centerX = base.getPrefWidth() / 2;
-            double radius = base.getPrefHeight() / 2 - 20;
-            Circle[] circles = new Circle[numNodes];
-            Text[] texts = new Text[numNodes];
-
-            double angleStep = 2 * Math.PI / numNodes;
-            for (int i = 0; i < numNodes; i++) {
-                double angle = i * angleStep;
-                double x = centerX + radius * Math.cos(angle);
-                double y = centerY + radius * Math.sin(angle);
-
-                Circle node = new Circle(x, y, 25, Color.valueOf("#027a8e"));
-                circles[i] = node;
-
-                Text text = new Text(String.valueOf(adjacencyListGraph.getVertexByIndex(i).data));
-                text.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-                text.setFill(Color.BLACK);
-                double textWidth = text.getLayoutBounds().getWidth();
-                double textHeight = text.getLayoutBounds().getHeight();
-                text.setX(x - textWidth / 2);
-                text.setY(y + textHeight / 4);
-                texts[i] = text;
-
-                base.getChildren().add(node);
-            }
-            drawEdges(circles);
-            base.getChildren().addAll(texts);
-
+            randomizeGraph(adjacencyListGraph);
+            drawGraph(adjacencyListGraph, this.base);
         } else if (adjacencyMatrixRadiobutton.isSelected()) {
-            base.getChildren().clear();
-            int numNodes = 0;
-            numNodes = adjacencyMatrixGraph.size();
-
-            double centerY = base.getPrefHeight() / 2;
-            double centerX = base.getPrefWidth() / 2;
-            double radius = base.getPrefHeight() / 2 - 20;
-            Circle[] circles = new Circle[numNodes];
-            Text[] texts = new Text[numNodes];
-
-            double angleStep = 2 * Math.PI / numNodes;
-            for (int i = 0; i < numNodes; i++) {
-                double angle = i * angleStep;
-                double x = centerX + radius * Math.cos(angle);
-                double y = centerY + radius * Math.sin(angle);
-
-                Circle node = new Circle(x, y, 25, Color.valueOf("#027a8e"));
-                circles[i] = node;
-
-                Text text = new Text(String.valueOf(adjacencyMatrixGraph.getVertexByIndex(i).data));
-                text.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-                text.setFill(Color.BLACK);
-                double textWidth = text.getLayoutBounds().getWidth();
-                double textHeight = text.getLayoutBounds().getHeight();
-                text.setX(x - textWidth / 2);
-                text.setY(y + textHeight / 4);
-                texts[i] = text;
-
-                base.getChildren().add(node);
-            }
-            drawEdges(circles);
-            base.getChildren().addAll(texts);
-
+            randomizeGraph(adjacencyMatrixGraph);
+            drawGraph(adjacencyMatrixGraph, this.base);
         } else if (linkedListRadiobutton.isSelected()) {
-            base.getChildren().clear();
-            int numNodes = 0;
-            try {
-                numNodes = linkedGraph.size();
-            } catch (ListException e) {
-                throw new RuntimeException(e);
-            }
-            double centerY = base.getPrefHeight() / 2;
-            double centerX = base.getPrefWidth() / 2;
-            double radius = base.getPrefHeight() / 2 - 20;
-            Circle[] circles = new Circle[numNodes];
-            Text[] texts = new Text[numNodes];
-
-            double angleStep = 2 * Math.PI / numNodes;
-            for (int i = 0; i < numNodes; i++) {
-                double angle = i * angleStep;
-                double x = centerX + radius * Math.cos(angle);
-                double y = centerY + radius * Math.sin(angle);
-
-                Circle node = new Circle(x, y, 25, Color.valueOf("#027a8e"));
-                circles[i] = node;
-
-                Text text = new Text(String.valueOf(linkedGraph.getVertexByIndex(i + 1).data));
-                text.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-                text.setFill(Color.BLACK);
-                double textWidth = text.getLayoutBounds().getWidth();
-                double textHeight = text.getLayoutBounds().getHeight();
-                text.setX(x - textWidth / 2);
-                text.setY(y + textHeight / 4);
-                texts[i] = text;
-
-                base.getChildren().add(node);
-            }
-            drawEdges(circles);
-            base.getChildren().addAll(texts);
+            randomizeGraph(singlyLinkedGraph);
+            drawGraph(singlyLinkedGraph, this.base);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(null);
+            alert.setContentText("Seleccione un tipo de grafo y un algoritmo MST para randomizar");
+            alert.showAndWait();
         }
+        tableView.setItems(getData());
+
     }
 
-    private void drawEdges(Circle[] circles) {
-        if (adjencyListRadiobutton.isSelected()) {
-            double centerY = base.getPrefHeight() / 2;
-            double centerX = base.getPrefWidth() / 2;
-            try {
-                int n = adjacencyListGraph.size();
+    private void drawGraph(Graph graph, Pane pane) {
+        base.getChildren().clear();
+        int numNodes = 0;
+        double centerY = base.getPrefHeight() / 2;
+        double centerX = base.getPrefWidth() / 2;
+        double radius = base.getPrefHeight() / 2 - 20;
+        Circle[] circles;
+        Text[] texts;
+
+        try {
+            numNodes = graph.size();
+            double angleStep = 2 * Math.PI / numNodes;
+            circles = new Circle[numNodes];
+            texts = new Text[numNodes];
+            for (int i = 0; i < numNodes; i++) {
+                double angle = i * angleStep;
+                double x = centerX + radius * Math.cos(angle);
+                double y = centerY + radius * Math.sin(angle);
+
+                Circle node = new Circle(x, y, 25, Color.valueOf("#027a8e"));
+                circles[i] = node;
+
+                Text data = null;
+                if (graph instanceof SinglyLinkedListGraph)
+                    data = new Text(String.valueOf(graph.getVertexByIndex(i + 1).data));
+                else data = new Text(String.valueOf(graph.getVertexByIndex(i).data));
+
+                data.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+                data.setFill(Color.WHITE);
+                double textWidth = data.getLayoutBounds().getWidth();
+                double textHeight = data.getLayoutBounds().getHeight();
+                data.setX(x - textWidth / 2);
+                data.setY(y + textHeight / 4);
+                texts[i] = data;
+
+                base.getChildren().add(node);
+            }
+        } catch (ListException e) {
+            throw new RuntimeException(e);
+        }
+
+        drawEdges(circles, graph, pane);
+        pane.getChildren().addAll(texts);
+    }
+
+    private void drawEdges(Circle[] circles, Graph graph, Pane pane) {
+        try {
+            int n = graph.size();
+            if (!(graph instanceof AdjacencyMatrixGraph)) {
                 for (int i = 0; i < n; i++) {
-                    Vertex vA = adjacencyListGraph.getVertexByIndex(i);
+                    Vertex vA = null;
+                    if (graph instanceof SinglyLinkedListGraph) vA = graph.getVertexByIndex(i + 1);
+                    else vA = graph.getVertexByIndex(i);
                     Circle nodoA = circles[i];
                     if (!vA.edgesList.isEmpty()) {
                         int nEdges = vA.edgesList.size();
+
                         for (int j = 0; j < nEdges; j++) {
                             EdgeWeight edge = (EdgeWeight) vA.edgesList.getNode(j + 1).data;
                             int vB = (int) edge.getEdge();
-                            int b = adjacencyListGraph.indexOf(vB);
-                            Circle nodoB = circles[b];
-                            double endX = centerX + (nodoB.getCenterX() - centerX) * 0.9;
-                            double endY = centerY + (nodoB.getCenterY() - centerY) * 0.9;
-                            double startX = centerX + (nodoA.getCenterX() - centerX) * 0.9;
-                            double startY = centerY + (nodoA.getCenterY() - centerY) * 0.9;
-
-                            Line line = new Line(startX, startY, endX, endY);
-                            line.setStroke(Color.BLACK);
-                            line.setStrokeWidth(3);
-
-                            Tooltip tooltip = new Tooltip("Vertice entre los nodos " + vA + " y " + vB);
-                            Tooltip.install(line, tooltip);
-                            tooltip.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-
-                            line.setOnMouseEntered(event -> {
-                                tooltip.show(base, event.getScreenX(), event.getScreenY() + 10);
-                                line.setStroke(Color.RED);
-                                line.setStrokeWidth(6);
-                            });
-
-                            line.setOnMouseExited(event -> {
-                                tooltip.hide();
-                                line.setStroke(Color.BLACK);
-                                line.setStrokeWidth(3);
-                            });
-                            this.base.getChildren().add(line);
+                            int b = graph.indexOf(vB);
+                            Circle nodoB = null;
+                            if (graph instanceof SinglyLinkedListGraph) nodoB = circles[b - 1];
+                            else nodoB = circles[b];
+                            drawLine(nodoA, nodoB, vA.data, vB, pane);
                         }
                     }
 
                 }
-            } catch (ListException e) {
-                e.printStackTrace();
-                System.out.println("1");
-            }
-        } else if (adjacencyMatrixRadiobutton.isSelected()) {
-            double centerY = base.getPrefHeight() / 2;
-            double centerX = base.getPrefWidth() / 2;
-            try {
-                int n = adjacencyMatrixGraph.size();
+            } else {
+                Object[][] matrix = ((AdjacencyMatrixGraph) graph).getAdjacencyMatrix();
                 for (int i = 0; i < n; i++) {
-                    Vertex vA = adjacencyMatrixGraph.getVertexByIndex(i);
-                    Circle nodoA = circles[i];
-                    if (!vA.edgesList.isEmpty()) {
-                        int nEdges = vA.edgesList.size();
-                        for (int j = 0; j < nEdges; j++) {
-                            EdgeWeight edge = (EdgeWeight) vA.edgesList.getNode(j).data;
-                            int vB = (int) edge.getEdge();
-                            int b = adjacencyMatrixGraph.indexOf(vB);
-                            Circle nodoB = circles[b];
-                            double endX = centerX + (nodoB.getCenterX() - centerX) * 0.9;
-                            double endY = centerY + (nodoB.getCenterY() - centerY) * 0.9;
-                            double startX = centerX + (nodoA.getCenterX() - centerX) * 0.9;
-                            double startY = centerY + (nodoA.getCenterY() - centerY) * 0.9;
-
-                            Line line = new Line(startX, startY, endX, endY);
-                            line.setStroke(Color.BLACK);
-                            line.setStrokeWidth(3);
-
-                            Tooltip tooltip = new Tooltip("Vertice entre los nodos " + vA + " y " + vB);
-                            Tooltip.install(line, tooltip);
-                            tooltip.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-
-                            line.setOnMouseEntered(event -> {
-                                tooltip.show(base, event.getScreenX(), event.getScreenY() + 10);
-                                line.setStroke(Color.RED);
-                                line.setStrokeWidth(6);
-                            });
-
-                            line.setOnMouseExited(event -> {
-                                tooltip.hide();
-                                line.setStroke(Color.BLACK);
-                                line.setStrokeWidth(3);
-                            });
-                            this.base.getChildren().add(line);
+                    for (int j = 0; j < n; j++) {
+                        if (!matrix[i][j].equals(0)) {
+                            Circle nodoA = circles[i];
+                            Circle nodoB = circles[j];
+                            Vertex vA = graph.getVertexByIndex(i);
+                            Vertex vB = graph.getVertexByIndex(j);
+                            drawLine(nodoA, nodoB, vA.data, vB.data, pane);
                         }
                     }
-
                 }
-            } catch (ListException e) {
-                e.printStackTrace();
-                System.out.println("1");
             }
-
-        } else if (linkedListRadiobutton.isSelected()) {
-
-            double centerY = base.getPrefHeight() / 2;
-            double centerX = base.getPrefWidth() / 2;
-            try {
-                int n = linkedGraph.size();
-                for (int i = 0; i < n; i++) {
-                    Vertex vA = linkedGraph.getVertexByIndex(i + 1);
-                    Circle nodoA = circles[i];
-                    if (!vA.edgesList.isEmpty()) {
-                        int nEdges = vA.edgesList.size();
-                        for (int j = 0; j < nEdges; j++) {
-                            EdgeWeight edge = (EdgeWeight) vA.edgesList.getNode(j + 1).data;
-                            int vB = (int) edge.getEdge();
-                            int b = linkedGraph.indexOf(vB);
-                            Circle nodoB = circles[b - 1];
-                            double endX = centerX + (nodoB.getCenterX() - centerX) * 0.9;
-                            double endY = centerY + (nodoB.getCenterY() - centerY) * 0.9;
-                            double startX = centerX + (nodoA.getCenterX() - centerX) * 0.9;
-                            double startY = centerY + (nodoA.getCenterY() - centerY) * 0.9;
-
-                            Line line = new Line(startX, startY, endX, endY);
-                            line.setStroke(Color.BLACK);
-                            line.setStrokeWidth(3);
-
-                            Tooltip tooltip = new Tooltip("Vertice entre los nodos " + vA + " y " + vB);
-                            Tooltip.install(line, tooltip);
-                            tooltip.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-
-                            line.setOnMouseEntered(event -> {
-                                tooltip.show(base, event.getScreenX(), event.getScreenY() + 10);
-                                line.setStroke(Color.RED);
-                                line.setStrokeWidth(6);
-                            });
-
-                            line.setOnMouseExited(event -> {
-                                tooltip.hide();
-                                line.setStroke(Color.BLACK);
-                                line.setStrokeWidth(3);
-                            });
-                            this.base.getChildren().add(line);
-                        }
-                    }
-
-                }
-            } catch (ListException e) {
-                e.printStackTrace();
-                System.out.println("2");
-            }
+        } catch (ListException e) {
+            e.printStackTrace();
         }
     }
 
+    private void drawLine(Circle nodoA, Circle nodoB, Object vA, Object vB, Pane pane) {
+        double centerY = pane.getPrefHeight() / 2;
+        double centerX = pane.getPrefWidth() / 2;
+        double endX = centerX + (nodoB.getCenterX() - centerX) * 0.9;
+        double endY = centerY + (nodoB.getCenterY() - centerY) * 0.9;
+        double startX = centerX + (nodoA.getCenterX() - centerX) * 0.9;
+        double startY = centerY + (nodoA.getCenterY() - centerY) * 0.9;
+
+        Line line = new Line(startX, startY, endX, endY);
+        line.setStroke(Color.BLACK);
+        line.setStrokeWidth(3);
+
+        Tooltip tooltip = new Tooltip("Vertice entre los nodos " + vA + " y " + vB);
+        Tooltip.install(line, tooltip);
+        tooltip.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+
+        line.setOnMouseEntered(event -> {
+            tooltip.show(pane, event.getScreenX(), event.getScreenY() + 10);
+            line.setStroke(Color.RED);
+            line.setStrokeWidth(6);
+        });
+
+        line.setOnMouseExited(event -> {
+            tooltip.hide();
+            line.setStroke(Color.BLACK);
+            line.setStrokeWidth(3);
+        });
+        pane.getChildren().add(line);
+    }
 }

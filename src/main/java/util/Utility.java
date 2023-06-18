@@ -95,9 +95,15 @@ public class Utility {
                         ch1.compareTo(ch2)>0? 1 : 0;
             case "EdgeWeight":
                 EdgeWeight ar1 = (EdgeWeight)a; EdgeWeight ar2 = (EdgeWeight)b;
-                int v1 = (int) ar1.getEdge(); int v2 = (int) ar2.getEdge();
-                return v1 < v2? -1 :
-                        v1 > v2? 1 : 0;
+                if (ar1.getEdge() instanceof Integer){
+                    int v1 = (int) ar1.getEdge(); int v2 = (int) ar2.getEdge();
+                    return v1 < v2? -1 :
+                            v1 > v2? 1 : 0;
+                } else if (ar1.getEdge() instanceof String) {
+                    String v1 = (String) ar1.getEdge(); String v2 = (String) ar2.getEdge();
+                    return v1.compareToIgnoreCase(v2)<0? -1 :
+                            v1.compareToIgnoreCase(v2)>0? 1 : 0;
+                }
         }
         return 2; //Unknown
     }

@@ -13,7 +13,7 @@ public class DijkstraAlgorithm {
     /*Funcion utilitaria para encontrar el vertice con la distancia minima,
     a partir del conjunto de los vertices todavia no incluidos en el
     camino más corto*/
-    private static int minDistance(int[] dist, boolean[] verticeYaProcesado) {
+    public int minDistance(int[] dist, boolean[] verticeYaProcesado) {
         // Initialize min value
         int min = Integer.MAX_VALUE;
         int min_index = 0;
@@ -34,7 +34,7 @@ public class DijkstraAlgorithm {
             System.out.println(i + " \t\t " + dist[i]);
     }*/
 
-    private static void dijkstra(int[][] grafo, int src) {
+    public void dijkstra(int[][] grafo, int src) {
 
 
         int[] dist = new int[V];

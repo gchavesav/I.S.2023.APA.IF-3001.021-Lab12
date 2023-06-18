@@ -3,7 +3,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -37,13 +36,7 @@
                   <Font name="Lucida Bright" size="26.0" />
                </font>
             </Label>
-            <TableView fx:id="tableView" layoutX="544.0" layoutY="96.0" prefHeight="499.0" prefWidth="355.0">
-               <columns>
-                  <TableColumn fx:id="positionColum" prefWidth="120.0" text="Position" />
-                  <TableColumn fx:id="vertexColum" prefWidth="127.0" text="Vertex" />
-                  <TableColumn fx:id="DistanceColum" minWidth="7.0" prefWidth="107.0" text="Distance" />
-               </columns>
-            </TableView>
+            <TableView fx:id="tableView" layoutX="544.0" layoutY="96.0" prefHeight="499.0" prefWidth="355.0" />
             <Pane fx:id="base" layoutX="32.0" layoutY="254.0" prefHeight="321.0" prefWidth="482.0" />
             <Label alignment="CENTER" layoutX="13.0" layoutY="48.0" prefHeight="31.0" prefWidth="236.0" style="-fx-background-color: #d7d7d7;" text="Graph Type">
                <font>
@@ -52,7 +45,7 @@
             </Label>
             <VBox layoutX="32.0" layoutY="106.0" spacing="20.0">
                <children>
-                  <RadioButton fx:id="adjacencyMatrixRadiobutton" mnemonicParsing="false" text="Adjacency Matrix">
+                  <RadioButton fx:id="adjacencyMatrixRadiobutton" mnemonicParsing="false" selected="true" text="Adjacency Matrix">
                      <font>
                         <Font size="20.0" />
                      </font>
