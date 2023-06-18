@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="730.0" prefWidth="1055.0" style="-fx-background-color: #009c8c;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LinkedGraphController">
+    <children>
+        <Pane prefHeight="730.0" prefWidth="426.0" style="-fx-background-color: #ccd5db;">
+            <children>
+                <Button layoutX="233.0" layoutY="295.0" mnemonicParsing="false" onAction="#bfsTourOnAction" prefHeight="52.0" prefWidth="169.0" text="BFS Tour" />
+                <Button layoutX="14.0" layoutY="144.0" mnemonicParsing="false" onAction="#randomizeOnAction" prefHeight="52.0" prefWidth="169.0" text="Randomize" />
+                <Button layoutX="207.0" layoutY="144.0" mnemonicParsing="false" onAction="#containsVertexOnAction" prefHeight="52.0" prefWidth="205.0" text="Contains Vertex" />
+                <Button layoutX="12.0" layoutY="295.0" mnemonicParsing="false" onAction="#dfsTourOnAction" prefHeight="52.0" prefWidth="205.0" text="DFS Tour" />
+                <Button layoutX="233.0" layoutY="220.0" mnemonicParsing="false" onAction="#toStringOnAction" prefHeight="52.0" prefWidth="169.0" text="To String" />
+                <Button layoutX="10.0" layoutY="220.0" mnemonicParsing="false" onAction="#containsEdgeOnAction" prefHeight="52.0" prefWidth="205.0" text="Contains Edge">
+                    <font>
+                        <Font name="Arial" size="12.0" />
+                    </font></Button>
+                <ScrollPane layoutY="365.0" prefHeight="364.0" prefWidth="426.0">
+                    <content>
+                        <TextArea fx:id="textareaInfo" prefHeight="364.0" prefWidth="413.0" />
+                    </content>
+                </ScrollPane>
+            </children>
+        </Pane>
+        <Pane prefHeight="127.0" prefWidth="1080.0" style="-fx-background-color: #07062e;">
+            <children>
+                <Text fill="#eeeeee" layoutX="164.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Singly Linked List Graph" wrappingWidth="751.13671875">
+                    <font>
+                        <Font name="Arial" size="66.0" />
+                    </font>
+                </Text>
+            </children>
+        </Pane>
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+        <Pane fx:id="lienzo" layoutX="426.0" layoutY="127.0" prefHeight="603.0" prefWidth="654.0" style="-fx-background-color: #146ea6;">
+            <children>
+                <Group fx:id="graf" layoutX="326.0" layoutY="302.0" />
+            </children>
+        </Pane>
+    </children>
+</AnchorPane>
+
+
